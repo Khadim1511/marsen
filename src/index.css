@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --primary: 48 100% 50%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 215.4 16.3% 46.9%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 210 40% 96.1%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 48 100% 50%;
+  --radius: 0.75rem;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #F7F7F7;
+}
+
+.marsen-yellow {
+  background-color: #FFD100;
+}
+
+.marsen-yellow-text {
+  color: #FFD100;
+}
+
+.btn-primary {
+  @apply bg-yellow-400 text-black font-bold py-3 px-6 rounded-xl transition-all duration-300 ease-in-out;
+  box-shadow: 0 4px 15px rgba(255, 209, 0, 0.3);
+}
+
+.btn-primary:hover {
+  @apply bg-yellow-500 transform -translate-y-1;
+  box-shadow: 0 6px 20px rgba(255, 209, 0, 0.4);
+}
+
+.btn-secondary {
+  @apply bg-black text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 ease-in-out;
+}
+
+.btn-secondary:hover {
+  @apply bg-gray-800 transform -translate-y-0.5;
+}
+
+.card-shadow {
+  box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.07);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.card-shadow:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.1);
+}
+
+.search-input-container {
+  @apply relative flex items-center w-full;
+}
+
+.search-input {
+  @apply border-2 border-transparent bg-white rounded-full w-full outline-none transition-all duration-300 pl-12 pr-12 py-3 md:py-4 text-base md:text-lg;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.search-input:focus {
+  @apply border-yellow-400;
+  box-shadow: 0 0 0 4px rgba(255, 209, 0, 0.2), 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.search-input-icon {
+  @apply absolute top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-black transition-colors;
+}
+
+.search-input-icon.left {
+  @apply left-4;
+}
+
+.search-input-icon.right {
+  @apply right-4;
+}
+
+@media (max-width: 768px) {
+  .btn-primary, .btn-secondary {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+  }
+  .search-input {
+    padding: 0.8rem 1rem; /* Adjusted padding for smaller screens */
+    font-size: 0.9rem;
+    padding-left: 3rem; /* Ensure space for left icon */
+    padding-right: 3rem; /* Ensure space for right icon */
+  }
+  .search-input-icon.left {
+    left: 1rem; /* Adjusted position for left icon */
+  }
+  .search-input-icon.right {
+    right: 1rem; /* Adjusted position for right icon */
+  }
+  .search-input-icon {
+    @apply w-4 h-4; /* Smaller icons on mobile */
+  }
+}
