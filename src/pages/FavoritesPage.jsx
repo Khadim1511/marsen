@@ -86,10 +86,13 @@ const FavoritesPage = () => {
   }, [user, authLoading, fetchFavorites]);
 
   const handleContact = (type, product) => {
+    const productUrl = `${window.location.origin}/product/${product.id}`;
+    const message = `Bonjour, je suis intéressé par votre produit "${product.name}" sur Marsen. Vous pouvez le voir ici : ${productUrl}`;
+
     if (type === 'phone') {
       window.open(`tel:${product.phone}`, '_self');
     } else if (type === 'whatsapp') {
-      window.open(`https://wa.me/${product.phone.replace(/\D/g, '')}?text=Bonjour, je suis intéressé par ${product.name}`, '_blank');
+      window.open(`https://wa.me/${product.phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`, '_blank');
     } else if (type === 'chat') {
       navigate('/chat');
     }
@@ -267,11 +270,11 @@ const FavoritesPage = () => {
                       Appeler
                     </button>
                     <button
-                      onClick={() => handleContact('chat', product)}
-                      className="flex-1 bg-blue-500 text-white py-2 px-3 rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors flex items-center justify-center"
+                      onClick={() => handleContact('whatsapp', product)}
+                      className="flex-1 bg-green-600 text-white py-2 px-3 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors flex items-center justify-center"
                     >
                       <MessageCircle className="w-4 h-4 mr-1" />
-                      Chat
+                      WhatsApp
                     </button>
                   </div>
                 </div>
