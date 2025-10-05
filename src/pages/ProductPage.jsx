@@ -103,10 +103,13 @@ const ProductPage = ({ openAuthModal }) => {
   const handleContact = (type) => {
     if (!product?.vendors) return;
     const vendorPhone = product.vendors.phone;
+    const productUrl = `${window.location.origin}/product/${product.id}`;
+    const message = `Bonjour, je suis intéressé par votre produit "${product.name}" sur Marsen. Vous pouvez le voir ici : ${productUrl}`;
+
     if (type === 'phone') {
       window.open(`tel:${vendorPhone}`, '_self');
     } else if (type === 'whatsapp') {
-      window.open(`https://wa.me/${vendorPhone.replace(/\D/g, '')}?text=Bonjour, je suis intéressé par votre produit "${product.name}"`, '_blank');
+      window.open(`https://wa.me/${vendorPhone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`, '_blank');
     }
   };
 
@@ -165,8 +168,8 @@ const ProductPage = ({ openAuthModal }) => {
 
     if (!navigator.share) {
       try {
-        await navigator.clipboard.writeText(`${shareData.text}\n${shareData.url}`);
-        toast({ title: "Lien copié !", description: "Les informations du produit ont été copiées." });
+        await navigator.clipboard.writeText(productUrl);
+        toast({ title: "Lien copié !", description: "Le lien du produit a été copié dans le presse-papiers." });
       } catch (err) {
         toast({ title: "Erreur", description: "Impossible de copier le lien.", variant: "destructive" });
       }
