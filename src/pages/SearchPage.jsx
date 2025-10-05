@@ -118,10 +118,13 @@ const SearchPage = ({ openAuthModal }) => {
   }, [fetchUserFavorites]);
 
   const handleContact = (type, product) => {
+    const productUrl = `${window.location.origin}/product/${product.id}`;
+    const message = `Bonjour, je suis intéressé par votre produit "${product.name}" sur Marsen. Vous pouvez le voir ici : ${productUrl}`;
+
     if (type === 'phone') {
       window.open(`tel:${product.phone}`, '_self');
     } else if (type === 'whatsapp') {
-      window.open(`https://wa.me/${product.phone.replace(/\D/g, '')}?text=Bonjour, je suis intéressé par ${product.name}`, '_blank');
+      window.open(`https://wa.me/${product.phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`, '_blank');
     } else if (type === 'chat') {
       toast({
         title: "🚧 Cette fonctionnalité n'est pas encore implémentée",
