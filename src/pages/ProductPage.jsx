@@ -155,30 +155,55 @@ const ProductPage = ({ openAuthModal }) => {
 
   const handleShareProduct = async () => {
     if (!product) return;
+
     const productUrl = `${window.location.origin}/product/${product.id}`;
     const shareData = {
       title: product.name,
-      text: `Découvrez "${product.name}" sur Marsen !`,
+      text: `Découvrez "${product.name}" sur Marsen ! Prix: ${Number(product.price).toLocaleString('fr-FR')} FCFA.`,
       url: productUrl,
     };
 
-    if (navigator.share) {
+    if (!navigator.share) {
       try {
-        await navigator.share(shareData);
-        toast({ title: "Produit partagé avec succès !" });
+        await navigator.clipboard.writeText(`${shareData.text}\n${shareData.url}`);
+        toast({ title: "Lien copié !", description: "Les informations du produit ont été copiées." });
       } catch (err) {
-        if (err.name !== 'AbortError') {
-          console.error('Share failed:', err);
-          toast({ title: "Erreur de partage", description: "Le partage a échoué.", variant: "destructive" });
+        toast({ title: "Erreur", description: "Impossible de copier le lien.", variant: "destructive" });
+      }
+      return;
+    }
+
+    try {
+      const imageUrl = product.image_urls?.[0];
+      let filesArray = [];
+
+      if (imageUrl) {
+        try {
+          const response = await fetch(imageUrl);
+          if (response.ok) {
+            const blob = await response.blob();
+            const file = new File([blob], 'product.jpg', { type: blob.type });
+            filesArray = [file];
+          }
+        } catch (fetchError) {
+          console.error("Could not fetch image for sharing:", fetchError);
         }
       }
-    } else {
-      try {
-        await navigator.clipboard.writeText(productUrl);
-        toast({ title: "Lien copié !", description: "Le lien du produit a été copié dans le presse-papiers." });
-      } catch (err) {
-        console.error('Copy failed:', err);
-        toast({ title: "Erreur", description: "Impossible de copier le lien.", variant: "destructive" });
+      
+      const canShareFiles = filesArray.length > 0 && navigator.canShare && navigator.canShare({ files: filesArray });
+
+      if (canShareFiles) {
+        await navigator.share({ ...shareData, files: filesArray });
+      } else {
+        await navigator.share(shareData);
+      }
+      
+      toast({ title: "Produit partagé avec succès !" });
+
+    } catch (err) {
+      if (err.name !== 'AbortError') {
+        console.error('Share failed:', err);
+        toast({ title: "Erreur de partage", description: "Le partage a échoué.", variant: "destructive" });
       }
     }
   };
@@ -240,7 +265,7 @@ const ProductPage = ({ openAuthModal }) => {
                   </div>
                 </div>
                 <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-black mb-3">{product.name}</h1>
-                <p className="text-3xl sm:text-4xl md:text-5xl font-bold marsen-yellow-text mb-6">{product.price} FCFA</p>
+                <p className="text-3xl sm:text-4xl md:text-5xl font-bold marsen-yellow-text mb-6">{Number(product.price).toLocaleString('fr-FR')} FCFA</p>
                 <p className="text-gray-700 text-base leading-relaxed mb-8">{product.description || "Aucune description pour ce produit."}</p>
               </div>
 
